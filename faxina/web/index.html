@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="faxina-token" content="__FAXINA_TOKEN__">
+<meta name="theme-color" content="#f2f3f4">
+<title>Faxina — controle de espaço</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2317191b'/%3E%3Cpath d='M14 16h36v8H14zm0 12h23v20H14zm27 0h9v20h-9z' fill='%23ff5b35'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<section class="screen home" id="screen-home" hidden>
+  <header class="home-top">
+    <div class="logo" aria-label="Faxina"><i aria-hidden="true"></i><span>FAXINA</span><small>CONTROLE DE ESPAÇO</small></div>
+    <div class="home-top-right">
+      <span class="privacy-pill"><i></i>PROCESSAMENTO LOCAL</span>
+      <span class="version">VERSÃO __FAXINA_VERSION__</span>
+      <button class="btn ghost sm" type="button" data-quit>ENCERRAR</button>
+    </div>
+  </header>
+
+  <main class="home-body">
+    <section class="home-intro">
+      <div class="home-copy">
+        <p class="eyebrow">ARMAZENAMENTO / INSPEÇÃO</p>
+        <h1>Espaço em<br><span>ordem.</span></h1>
+        <p class="lead">Entenda o que realmente ocupa seu computador, encontre excessos e revise tudo antes de remover qualquer coisa.</p>
+        <div class="home-notes" aria-label="Recursos principais">
+          <span>MAPA DE USO</span><span>DUPLICADOS</span><span>QUARENTENA</span>
+        </div>
+      </div>
+
+      <div class="space-preview" id="space-preview" aria-label="Resumo real do armazenamento do computador">
+        <div class="preview-head"><span id="preview-volume">ARMAZENAMENTO LOCAL</span><b id="preview-capacity">—</b></div>
+        <div class="preview-total"><strong id="preview-used">—</strong><span>EM USO</span></div>
+        <div class="preview-bars" aria-hidden="true">
+          <i class="pv-used" id="preview-used-bar"></i><i class="pv-free" id="preview-free-bar"></i>
+        </div>
+        <div class="preview-axis" id="preview-axis"><span>0</span><span>—</span><span>—</span><span>—</span><span>—</span></div>
+        <div class="preview-list">
+          <div><i class="pv-dot used"></i><span>USADO</span><b id="preview-used-list">—</b></div>
+          <div><i class="pv-dot free"></i><span>LIVRE</span><b id="preview-free">—</b></div>
+          <div class="preview-wide"><i class="pv-dot volume"></i><span>VOLUME</span><b id="preview-path">—</b></div>
+        </div>
+        <div class="preview-stamp" id="preview-stamp">DADOS REAIS</div>
+      </div>
+    </section>
+
+    <section class="pick-panel" aria-labelledby="pick-title">
+      <div class="pick-title">
+        <div>
+          <p class="eyebrow">NOVA INSPEÇÃO</p>
+          <h2 id="pick-title">Escolha o que analisar</h2>
+        </div>
+        <span class="pick-help">PASTA OU VOLUME COMPLETO</span>
+      </div>
+      <div class="pick">
+        <form class="path-form" id="path-form">
+          <label class="sr-only" for="path-input">Caminho da pasta</label>
+          <input id="path-input" type="text" spellcheck="false" autocomplete="off" placeholder="C:\\Users\\...">
+          <button type="button" class="btn ghost" id="browse-btn">PROCURAR</button>
+          <button type="submit" class="btn primary">ANALISAR →</button>
+        </form>
+        <p class="form-error" id="path-error" role="alert" hidden></p>
+      </div>
+    </section>
+
+    <div class="home-options">
+      <section class="option-block">
+        <div class="option-heading"><h2 class="label">VOLUMES DISPONÍVEIS</h2></div>
+        <div class="drives" id="drives"></div>
+      </section>
+      <section class="option-block">
+        <div class="option-heading"><h2 class="label">ACESSO RÁPIDO</h2></div>
+        <div class="places" id="places"></div>
+        <div id="recent-wrap" hidden>
+          <div class="option-heading recent-heading"><h2 class="label">ANÁLISES RECENTES</h2></div>
+          <div class="places" id="recent"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="home-foot"><span>FAXINA / UTILITÁRIO LOCAL DE ARMAZENAMENTO</span><span>NADA É APAGADO DIRETAMENTE</span></footer>
+</section>
+
+<section class="screen" id="screen-scan" hidden>
+  <div class="scan-body">
+    <div class="scan-code">ANÁLISE / ATIVA</div>
+    <div class="scan-mark" aria-hidden="true"><i></i></div>
+    <p class="eyebrow">INDEXANDO ARQUIVOS</p>
+    <h1 class="scan-title">Medindo o espaço.</h1>
+    <p class="scan-root" id="scan-root"></p>
+    <div class="scan-numbers">
+      <div><span>ARQUIVOS</span><b id="scan-files">0</b></div>
+      <div><span>VOLUME</span><b id="scan-bytes">0 B</b></div>
+      <div><span>PASTAS</span><b id="scan-dirs">0</b></div>
+    </div>
+    <div class="scan-bar"><i></i></div>
+    <p class="scan-current mono" id="scan-current" aria-live="off"></p>
+    <p class="muted" id="scan-elapsed"></p>
+    <button class="btn ghost" id="scan-cancel" type="button">CANCELAR ANÁLISE</button>
+  </div>
+</section>
+
+<div class="screen app" id="screen-app" hidden>
+  <aside class="side">
+    <div class="side-brand">
+      <div class="logo"><i aria-hidden="true"></i><span>FAXINA</span></div>
+      <p>CONTROLE DE ESPAÇO</p>
+    </div>
+    <nav class="nav" aria-label="Seções">
+      <button type="button" data-view="overview" class="is-active"><span>Resumo</span></button>
+      <button type="button" data-view="map"><span>Mapa</span></button>
+      <button type="button" data-view="files"><span>Arquivos</span></button>
+      <button type="button" data-view="dups"><span>Duplicados</span><em id="badge-dups"></em></button>
+      <button type="button" data-view="cleanup"><span>Revisar</span><em id="badge-cleanup"></em></button>
+      <button type="button" data-view="quarantine"><span>Quarentena</span><em id="badge-quarantine"></em></button>
+      <button type="button" data-view="history"><span>Histórico</span></button>
+    </nav>
+    <div class="side-foot">
+      <div class="side-context">
+        <p class="label">ALVO</p>
+        <p class="side-root mono" id="side-root"></p>
+      </div>
+      <div class="side-actions">
+        <button class="btn ghost sm" id="rescan-btn" type="button">REANALISAR</button>
+        <button class="btn ghost sm" id="other-btn" type="button">TROCAR</button>
+        <button class="btn ghost sm" type="button" data-quit>SAIR</button>
+      </div>
+      <p class="freed" id="freed" hidden></p>
+    </div>
+  </aside>
+  <main class="main" id="main" tabindex="-1">
+    <section class="view" id="view-overview"></section>
+    <section class="view" id="view-map" hidden></section>
+    <section class="view" id="view-files" hidden></section>
+    <section class="view" id="view-dups" hidden></section>
+    <section class="view" id="view-cleanup" hidden></section>
+    <section class="view" id="view-quarantine" hidden></section>
+    <section class="view" id="view-history" hidden></section>
+  </main>
+  <div class="selbar" id="selbar" hidden>
+    <span id="sel-info"></span>
+    <button class="btn ghost sm" id="sel-clear" type="button">LIMPAR SELEÇÃO</button>
+    <button class="btn primary sm" id="sel-move" type="button">MOVER PARA QUARENTENA</button>
+  </div>
+</div>
+
+<section class="screen" id="screen-bye" hidden>
+  <div class="scan-body bye-wrap">
+    <div class="logo logo-large"><i aria-hidden="true"></i><span>FAXINA</span></div>
+    <p class="eyebrow">SESSÃO ENCERRADA</p>
+    <h1 class="bye">Espaço sob controle.</h1>
+    <p class="muted">Pode fechar esta aba. Os itens da quarentena continuam disponíveis na próxima vez.</p>
+  </div>
+</section>
+
+<div class="tooltip" id="tooltip" hidden></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<dialog class="modal" id="modal">
+  <form method="dialog" class="modal-inner">
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </form>
+</dialog>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
